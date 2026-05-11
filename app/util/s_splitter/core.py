@@ -15,12 +15,15 @@ def rule_based_candidate_split(text: str) -> List[CandidateSpan]:
     - 오프셋/substring 보존을 최우선.
     - 과분절 허용(LLM 후처리 전제) + 쉼표/서술어 기반 의미절 후보 포착 강화.
     """
+    print("Orininal Text:", text)
+    print()
     text = _normalize(text)
-
+    print("Normalised Text:", text)
+    print()
     candidates: List[CandidateSpan] = []
-
     base_spans = _basic_sentence_split(text)
-
+    print("Basic Sentence Split:", base_spans)
+    print()
     for base_text, base_start, base_end in base_spans:
         marker_idxs = _find_marker_splits(base_text)
         ending_idxs = _ending_based_splits(base_text)
@@ -50,6 +53,6 @@ def rule_based_candidate_split(text: str) -> List[CandidateSpan]:
                     end=end,
                 )
             )
-    print(candidates)
+    print("candidates:", candidates)
 
     return candidates

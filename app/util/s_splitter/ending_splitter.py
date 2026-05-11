@@ -15,6 +15,7 @@ def _ending_based_splits(span: str) -> List[int]:
         found = span.find(tok, cursor)
         if found == -1:
             continue
+
         tok_end = found + len(tok)
         cursor = tok_end
 
@@ -23,7 +24,8 @@ def _ending_based_splits(span: str) -> List[int]:
             split_char_indices.append(tok_end)
 
         # Mecab 계열 태그 보강(있으면)
-        if tag in ("EC", "EF") and 0 < tok_end < len(span):
+        tag_parts = tag.split("+")
+        if any(part in ("EC", "EF") for part in tag_parts) and 0 < tok_end < len(span):
             split_char_indices.append(tok_end)
 
         # 2) 서술성 명사 단서
