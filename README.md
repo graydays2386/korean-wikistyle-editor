@@ -342,18 +342,18 @@ Some steps may later be replaced with deterministic Python logic to reduce laten
 
 Possible next steps:
 
-   1. Improve short-fragment merging in the rule-based splitter.
-   2. Strengthen Agent A subject-restoration rules.
-   3. Make Agent B section titles more conservative and input-grounded.
-   4. Replace part or all of Agent C with deterministic Markdown assembly.
-   5. Improve Agent D summary prompt to avoid awkward conjunctions.
-   6. Refine dependency management by separating CUDA-specific PyTorch packages from general Python dependencies.
-   7. Consider adding `pyproject.toml` if the project is later packaged as an installable Python application.
-   8. Add small unit tests for:
-      - splitter behavior
-      - JSON parsing
-      - CLI input loading
-      - Markdown output saving
-
+1. Improve short-fragment merging in the rule-based splitter.
+2. Strengthen Agent A subject-restoration rules.
+3. Make Agent B section titles more conservative and input-grounded.
+4. Replace part or all of Agent C with deterministic Markdown assembly.
+5. Improve Agent D summary prompt to avoid awkward conjunctions.
+6. Refine dependency management by separating CUDA-specific PyTorch packages from general Python dependencies.
+7. Evaluate LangChain or LangGraph if the pipeline later requires formal chain orchestration, retry handling, tracing, or structured output parsing.
+8. Consider adding `pyproject.toml` if the project is later packaged as an installable Python application.
+9. Add small unit tests for:
+   - splitter behavior
+   - JSON parsing
+   - CLI input loading
+   - Markdown output saving
 ## License
 TBD
