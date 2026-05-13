@@ -1,5 +1,7 @@
 import json
 
+from app.util.agents_new.json_utils import parse_llm_json
+
 
 class TocArchitectAgent:
     def __init__(self, llm):
@@ -49,4 +51,8 @@ Input:
             do_sample=False,
         )
 
-        return json.loads(raw)
+        print("\n[DEBUG agent_b raw]")
+        print(repr(raw))
+        print("[/DEBUG agent_b raw]\n")
+
+        return parse_llm_json(raw)
