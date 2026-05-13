@@ -71,7 +71,8 @@ Each candidate span contains:
    text
    reason
    start
-   end```
+   end
+```
 
 The splitter intentionally allows some over-segmentation because downstream LLM agents are expected to merge or reconstruct fragmented spans.
 
@@ -80,10 +81,12 @@ The splitter intentionally allows some over-segmentation because downstream LLM 
 SentenceReconstructorAgent converts fragmented candidate spans into complete Korean sentences.
 
 Expected output:
-```{
+```
+{
   "1": "첫 번째 완성 문장이다.",
   "2": "두 번째 완성 문장이다."
-}```
+}
+```
 
 ### 3. Agent B: TOC Architecture
 
@@ -102,7 +105,8 @@ Expected output:
       "sentence_indices": [1, 2, 3]
     }
   ]
-}```
+}
+```
 
 ### 4. Agent C: Body Compilation
 
@@ -182,26 +186,40 @@ The runtime downloads the model from Hugging Face Hub.
 
 Unauthenticated requests may work but can be rate-limited.
 For more stable downloads, log in with a Hugging Face token:
-```   huggingface-cli login```
+```
+huggingface-cli login
+```
 
 ## Usage
 ## Run with an input file
-```   python main.py --input-file examples/alcmadea.txt```
+```
+python main.py --input-file examples/alcmadea.txt
+```
 
 ## Run with direct text
-```   python main.py --text "알크마이온 가문은 원래부터 명망이 높았지만..."```
+```
+python main.py --text "알크마이온 가문은 원래부터 명망이 높았지만..."
+```
 
 ## Run with standard input
-```   Get-Content examples/alcmadea.txt -Raw | python main.py --stdin```
+```
+Get-Content examples/alcmadea.txt -Raw | python main.py --stdin
+```
 
 ## Print only the generated Markdown body
-```   python main.py --input-file examples/alcmadea.txt --print-body```
+```
+python main.py --input-file examples/alcmadea.txt --print-body
+```
 
 ## Save full JSON result
-```   python main.py --input-file examples/alcmadea.txt --output-json outputs/alcmadea.result.json```
+```
+   python main.py --input-file examples/alcmadea.txt --output-json outputs/alcmadea.result.json
+```
 
 ## Save generated Markdown body
-```   python main.py --input-file examples/alcmadea.txt --output-md outputs/alcmadea.body.md```
+```
+   python main.py --input-file examples/alcmadea.txt --output-md outputs/alcmadea.body.md
+```
 
 ## Save both JSON and Markdown
 ```
@@ -209,7 +227,7 @@ python main.py `
   --input-file examples/alcmadea.txt `
   --output-json outputs/alcmadea.result.json `
   --output-md outputs/alcmadea.body.md
-  ```
+```
 
 ## CLI Options
 | Option               | Description                                  |
@@ -228,7 +246,9 @@ Only one input source can be used at a time:
    --stdin
 
 ## Example Input
-```알크마이온 가문은 원래부터 명망이 높았지만 알크마이온과 그 아들 메가클레스 때부터 명망이 더 높아짐. 크로이소스가 델포이에 신탁을 보낼 때 알크마이온이 여러모로 도와줌. 이에 크로이소스는 알크마이온을 사르디스로 초청해서 그가 한 몸에 가져갈 수 있을 만큼의 금을 선물로 주겠다고 함.```
+```
+알크마이온 가문은 원래부터 명망이 높았지만 알크마이온과 그 아들 메가클레스 때부터 명망이 더 높아짐. 크로이소스가 델포이에 신탁을 보낼 때 알크마이온이 여러모로 도와줌. 이에 크로이소스는 알크마이온을 사르디스로 초청해서 그가 한 몸에 가져갈 수 있을 만큼의 금을 선물로 주겠다고 함.
+```
 
 ## Example Output Structure
 The pipeline returns:
