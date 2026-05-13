@@ -45,9 +45,11 @@ Markdown body
 Agent D: SummaryAgent
   ↓
 abstract
+```
 
 The final result is returned as a dictionary:
 
+```
 {
   "abstract": "...",
   "toc": {
@@ -56,6 +58,7 @@ The final result is returned as a dictionary:
   "body": "...",
   "latency": {}
 }
+```
 
 ## Main Components
 
@@ -138,7 +141,7 @@ Current runtime dependencies include:
 A CUDA-enabled PyTorch installation is recommended.
 
 ## Installation
-
+```markdown
 Clone the repository:
 
 ```bash
