@@ -62,33 +62,35 @@ The final result is returned as a dictionary:
 
 ## Main Components
 
-## 1. Rule-based splitter
+### 1. Rule-based splitter
 
 The splitter generates candidate spans from Korean informal text while preserving substring offsets.
 
 Each candidate span contains:
+```
    text
    reason
    start
-   end
+   end```
 
 The splitter intentionally allows some over-segmentation because downstream LLM agents are expected to merge or reconstruct fragmented spans.
 
-## 2. Agent A: Sentence Reconstruction
+### 2. Agent A: Sentence Reconstruction
 
 SentenceReconstructorAgent converts fragmented candidate spans into complete Korean sentences.
 
 Expected output:
-{
+```{
   "1": "첫 번째 완성 문장이다.",
   "2": "두 번째 완성 문장이다."
-}
+}```
 
-## 3. Agent B: TOC Architecture
+### 3. Agent B: TOC Architecture
 
 TocArchitectAgent groups indexed sentences and generates a hierarchical table of contents.
 
 Expected output:
+```
 {
   "toc_structure": [
     {
@@ -100,20 +102,20 @@ Expected output:
       "sentence_indices": [1, 2, 3]
     }
   ]
-}
+}```
 
-## 4. Agent C: Body Compilation
+### 4. Agent C: Body Compilation
 
 BodyCompilerAgent assembles a Markdown document from the sentence library and TOC structure.
 
-## 5. Agent D: Summary
+### 5. Agent D: Summary
 
 SummaryAgent generates either a one-sentence or three-sentence Korean abstract depending on the number of reconstructed sentences.
 
-## 6. Latency Measurement
+### 6. Latency Measurement
 
 The pipeline records latency for major stages:
-
+```
    splitter.rule_based_candidate_split
    llm.init
    agent_init
@@ -122,7 +124,7 @@ The pipeline records latency for major stages:
    agent_c.compile_body
    agent_d.summarize
    pipeline.total
-
+```
 ## Model Runtime
 
 The current LLM runtime uses: google/gemma-4-E4B-it
@@ -130,6 +132,7 @@ The current LLM runtime uses: google/gemma-4-E4B-it
 The model is loaded with 4-bit quantization through BitsAndBytesConfig.
 
 Current runtime dependencies include:
+```
    torch
    transformers
    accelerate
@@ -137,37 +140,39 @@ Current runtime dependencies include:
    huggingface_hub
    safetensors
    sentencepiece
-
+```
 A CUDA-enabled PyTorch installation is recommended.
 
 ## Installation
-```markdown
+
 Clone the repository:
 
 ```bash
 git clone https://github.com/graydays2386/korean-wikistyle-editor.git
 cd korean-wikistyle-editor
+```
 
 Create and activate a virtual environment:
+```
    python -m venv .venv
    .\.venv\Scripts\activate
+```
 
 Install runtime dependencies:
+```
    python -m pip install -U pip
-   python -m pip install -r requirements.txt
+  python -m pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cu121
+```
 
 Note: requirements.txt currently pins CUDA 12.1 PyTorch packages. If your local CUDA version is different, install the appropriate PyTorch build from the official PyTorch index before or after installing the remaining dependencies.
 
 Install CUDA-enabled PyTorch according to your local CUDA environment.
 
-Example for CUDA 12.1:
-   python -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
-
 Check the installation:
+```
    python -c "import torch; print(torch.__version__); print(torch.cuda.is_available()); print(torch.version.cuda)"
    python -c "import transformers; print(transformers.__version__)"
-
-```markdown
+```
 This repository is currently intended to be run from the project root.  
 You do not need to install `korean-wikistyle-editor` as a Python package.
 
@@ -177,33 +182,34 @@ The runtime downloads the model from Hugging Face Hub.
 
 Unauthenticated requests may work but can be rate-limited.
 For more stable downloads, log in with a Hugging Face token:
-   huggingface-cli login
+```   huggingface-cli login```
 
 ## Usage
 ## Run with an input file
-In terminal environtment, input:
-   python main.py --input-file examples/alcmadea.txt
+```   python main.py --input-file examples/alcmadea.txt```
 
 ## Run with direct text
-   python main.py --text "알크마이온 가문은 원래부터 명망이 높았지만..."
+```   python main.py --text "알크마이온 가문은 원래부터 명망이 높았지만..."```
 
 ## Run with standard input
-   Get-Content examples/alcmadea.txt -Raw | python main.py --stdin
+```   Get-Content examples/alcmadea.txt -Raw | python main.py --stdin```
 
 ## Print only the generated Markdown body
-   python main.py --input-file examples/alcmadea.txt --print-body
+```   python main.py --input-file examples/alcmadea.txt --print-body```
 
 ## Save full JSON result
-   python main.py --input-file examples/alcmadea.txt --output-json outputs/alcmadea.result.json
+```   python main.py --input-file examples/alcmadea.txt --output-json outputs/alcmadea.result.json```
 
 ## Save generated Markdown body
-   python main.py --input-file examples/alcmadea.txt --output-md outputs/alcmadea.body.md
+```   python main.py --input-file examples/alcmadea.txt --output-md outputs/alcmadea.body.md```
 
 ## Save both JSON and Markdown
-   python main.py `
+```
+python main.py `
   --input-file examples/alcmadea.txt `
   --output-json outputs/alcmadea.result.json `
   --output-md outputs/alcmadea.body.md
+  ```
 
 ## CLI Options
 | Option               | Description                                  |
@@ -222,10 +228,11 @@ Only one input source can be used at a time:
    --stdin
 
 ## Example Input
-알크마이온 가문은 원래부터 명망이 높았지만 알크마이온과 그 아들 메가클레스 때부터 명망이 더 높아짐. 크로이소스가 델포이에 신탁을 보낼 때 알크마이온이 여러모로 도와줌. 이에 크로이소스는 알크마이온을 사르디스로 초청해서 그가 한 몸에 가져갈 수 있을 만큼의 금을 선물로 주겠다고 함.
+```알크마이온 가문은 원래부터 명망이 높았지만 알크마이온과 그 아들 메가클레스 때부터 명망이 더 높아짐. 크로이소스가 델포이에 신탁을 보낼 때 알크마이온이 여러모로 도와줌. 이에 크로이소스는 알크마이온을 사르디스로 초청해서 그가 한 몸에 가져갈 수 있을 만큼의 금을 선물로 주겠다고 함.```
 
 ## Example Output Structure
 The pipeline returns:
+```
 {
   "abstract": "알크마이온 가문은 원래부터 명망이 높았고...",
   "toc": {
@@ -243,9 +250,10 @@ The pipeline returns:
     "pipeline.total": 339.4621
   }
 }
+```
 
 ## Project Structure
-
+```
 korean-wikistyle-editor/
 ├─ main.py
 ├─ examples/
@@ -267,17 +275,17 @@ korean-wikistyle-editor/
 │        ├─ agent_d_summarizer.py
 │        ├─ json_utils.py
 │        └─ latency.py
-
+```
 ## Design Notes
 
-## Why use rule-based candidate splitting?
+### Why use rule-based candidate splitting?
 
 The splitter is not intended to produce final sentence boundaries.
 Instead, it produces candidate spans that preserve offsets and expose possible semantic boundaries.
 
 This allows the downstream LLM agent to reconstruct more complete and independent sentences.
 
-## Why use JSON parsing utilities?
+### Why use JSON parsing utilities?
 
 LLMs may return JSON in slightly different formats, including:
    pure JSON
@@ -286,7 +294,7 @@ LLMs may return JSON in slightly different formats, including:
 
 The shared JSON parsing utility is used to make Agent A and Agent B more robust against these output variations.
 
-## Why measure latency?
+### Why measure latency?
 
 The current pipeline uses multiple LLM calls.
 Latency measurement helps identify bottlenecks across:
