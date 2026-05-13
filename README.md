@@ -134,6 +134,8 @@ The pipeline records latency for major stages:
 The current LLM runtime uses: google/gemma-4-E4B-it
 
 The model is loaded with 4-bit quantization through BitsAndBytesConfig.
+The model ID is currently hard-coded in `app/util/agents_new/llm_runtime.py`.  
+Changing the model requires editing `model_id` in that file.
 
 Current runtime dependencies include:
 ```
@@ -328,12 +330,13 @@ In local testing, body compilation may become a major bottleneck.
 Some steps may later be replaced with deterministic Python logic to reduce latency.
 
 ## Known Limitations
-   The current pipeline may over-segment short Korean endings such as 함., 줌., or 됨..
-   Agent A may incorrectly restore omitted subjects in ambiguous Korean sentences.
-   Agent B may generate section titles that are semantically plausible but not strictly grounded in the input.
-   Agent C currently uses an LLM for Markdown assembly, although much of this step could be deterministic.
-   Agent D may produce awkward conjunction patterns depending on the prompt.
-   The current local runtime can be slow because each agent call invokes generation on a quantized local model.
+
+- The current pipeline may over-segment short Korean endings such as `함.`, `줌.`, or `됨.`.
+- Agent A may incorrectly restore omitted subjects in ambiguous Korean sentences.
+- Agent B may generate section titles that are semantically plausible but not strictly grounded in the input.
+- Agent C currently uses an LLM for Markdown assembly, although much of this step could be deterministic.
+- Agent D may produce awkward conjunction patterns depending on the prompt.
+- The current local runtime can be slow because each agent call invokes generation on a quantized local model.
 
 ## Development Roadmap
 
