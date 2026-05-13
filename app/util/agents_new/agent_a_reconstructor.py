@@ -54,8 +54,4 @@ User Input:
             do_sample=False,
         )
 
-        print("\n[DEBUG agent_a raw]")
-        print(repr(raw))
-        print("[/DEBUG agent_a raw]\n")
-
         return parse_llm_json(raw)

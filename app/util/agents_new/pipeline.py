@@ -4,7 +4,7 @@ from app.util.agents_new.agent_b_toc_architect import TocArchitectAgent
 from app.util.agents_new.agent_c_body_compiler import BodyCompilerAgent
 from app.util.agents_new.agent_d_summarizer import SummaryAgent
 from app.util.s_splitter.core import rule_based_candidate_split
-from app.util.latency import measure_latency, print_latency_report
+from app.util.agents_new.latency import measure_latency, print_latency_report
 import time
 
 def run_pipeline(raw_text: str, llm=None) -> dict:
