@@ -12,13 +12,14 @@ class Gemma4Env:
         )
         
         model_id = "google/gemma-4-E4B-it"
-
+        print("Model:", model_id)
         self.processor = AutoProcessor.from_pretrained(model_id)
         self.model = AutoModelForCausalLM.from_pretrained(
             model_id,
             quantization_config=quantization_config,
             device_map={"": 0},
         )
+        print("모델 4bit 퀀텀화 완료")
 
     def generate_chat(
         self,

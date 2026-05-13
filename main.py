@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from app.util.s_splitter import rule_based_candidate_split
-from app.util.agents_new.pipeline import run_pipeline
+from app.util.agents_new.pipeline import run_agent_pipeline
 
 if __name__ == "__main__":
     sample = (
@@ -8,7 +8,6 @@ if __name__ == "__main__":
     )
 
     spans = rule_based_candidate_split(sample)
-
-    result = run_pipeline(spans)
+    result = run_agent_pipeline(spans)
     print("\n--- 파이프라인 최종 결과 ---")
     print(result)
