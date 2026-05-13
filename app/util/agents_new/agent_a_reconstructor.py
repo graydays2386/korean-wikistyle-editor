@@ -27,6 +27,8 @@ Rules:
 8. The first character of your answer must be {{.
 9. The last character of your answer must be }}.
 10. Use numeric string keys: "1", "2", "3", ...
+11. When restoring omitted subjects, infer the subject from the nearest governing clause. If the subject is ambiguous, preserve ambiguity rather than assigning a new subject. Do not change the agent/patient relationship of the original text. 
+12. When a subject is omitted, restore it only if the subject is clearly recoverable from the nearest previous sentence. If a sentence describes giving, receiving, inviting, laughing, or reacting, preserve the original actor as precisely as possible. Do not leave an omitted subject unresolved when the previous context clearly identifies the actor.
 
 Output schema:
 {{

@@ -22,6 +22,7 @@ Rules:
 4. Concatenate sentences strictly in the order listed.
 5. Do NOT rewrite, summarize, or alter the sentences.
 6. Return ONLY the final Markdown content.
+7. All generated Korean prose, including the overview section, must use plain Korean "-다" style.
 
 sentences = {json.dumps(sentences, ensure_ascii=False)}
 toc = {json.dumps(toc, ensure_ascii=False)}

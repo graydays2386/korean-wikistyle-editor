@@ -15,6 +15,7 @@ Rules:
 2. No evaluation.
 3. Only facts.
 4. Do NOT add external knowledge.
+5. Do not force conjunctions. If a sentence-level conjunction is necessary, use only "그리고" or "또한". Do not use "그리고" immediately after "-고". Do not use awkward forms such as "-고 그리고".
 
 User Input:
 {body}

@@ -1,13 +1,106 @@
 # -*- coding: utf-8 -*-
-from app.util.s_splitter import rule_based_candidate_split
-from app.util.agents_new.pipeline import run_agent_pipeline
+import argparse
+import json
+import sys
+from pathlib import Path
 
-if __name__ == "__main__":
-    sample = (
-        "케르소네소스 지역의 참주는 키몬의 아들이자 스테사고라스의 손자 밀티아데스. 돌롱코이 족이라는 트라키아 부족이 이웃 부족에게 밀리자 델포이 신탁을 구함. 그러다가 킵셀로스의 아들 밀티아데스를 만남. 밀티아데스는 경주용 4두마차를 유지할 수 있을 만큼 재력이 있었는데, 당시의 페이시스트라토스의 통치에 염증을 느끼고 있었음. 마침 돌롱코이족이 처음 만나는 사람을 왕으로 삼으라는 신탁을 밀티아데스를 추대하라는 말로 해석하고 함께 갈 것을 제안하자 이를 수락. 신탁의 자문을 받은 그는 다른 아테네 모험가들과 함께 가서 돌롱코이족의 참주가 됨."
+from app.util.agents_new.pipeline import run_pipeline
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Run Korean wiki-style editing pipeline."
     )
 
-    spans = rule_based_candidate_split(sample)
-    result = run_agent_pipeline(spans)
+    input_group = parser.add_mutually_exclusive_group(required=True)
+    input_group.add_argument(
+        "-i",
+        "--input-file",
+        type=Path,
+        help="Path to a UTF-8 text file to process.",
+    )
+    input_group.add_argument(
+        "-t",
+        "--text",
+        type=str,
+        help="Raw text to process.",
+    )
+    input_group.add_argument(
+        "--stdin",
+        action="store_true",
+        help="Read raw text from standard input.",
+    )
+
+    parser.add_argument(
+        "--output-json",
+        type=Path,
+        help="Optional path to save the full pipeline result as JSON.",
+    )
+    parser.add_argument(
+        "--output-md",
+        type=Path,
+        help="Optional path to save only the generated Markdown body.",
+    )
+    parser.add_argument(
+        "--encoding",
+        default="utf-8",
+        help="Input/output file encoding. Default: utf-8.",
+    )
+    parser.add_argument(
+        "--print-body",
+        action="store_true",
+        help="Print only the generated Markdown body instead of the full result.",
+    )
+
+    return parser.parse_args()
+
+
+def load_input(args: argparse.Namespace) -> str:
+    if args.input_file:
+        if not args.input_file.exists():
+            raise FileNotFoundError(f"Input file not found: {args.input_file}")
+        return args.input_file.read_text(encoding=args.encoding).strip()
+
+    if args.text:
+        return args.text.strip()
+
+    if args.stdin:
+        return sys.stdin.read().strip()
+
+    raise ValueError("No input source provided.")
+
+
+def save_outputs(result: dict, args: argparse.Namespace) -> None:
+    if args.output_json:
+        args.output_json.parent.mkdir(parents=True, exist_ok=True)
+        args.output_json.write_text(
+            json.dumps(result, ensure_ascii=False, indent=2),
+            encoding=args.encoding,
+        )
+
+    if args.output_md:
+        args.output_md.parent.mkdir(parents=True, exist_ok=True)
+        body = result.get("body", "")
+        args.output_md.write_text(body, encoding=args.encoding)
+
+
+def main() -> None:
+    args = parse_args()
+    raw_text = load_input(args)
+
+    if not raw_text:
+        raise ValueError("Input text is empty.")
+
+    result = run_pipeline(raw_text)
+
+    save_outputs(result, args)
+
     print("\n--- 파이프라인 최종 결과 ---")
-    print(result)
+    if args.print_body:
+        print(result.get("body", ""))
+    else:
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+
+
+if __name__ == "__main__":
+    main()

@@ -27,6 +27,7 @@ Rules:
 5. Do NOT summarize.
 6. Do NOT add external knowledge.
 7. Return ONLY a valid JSON object.
+8. Section titles must describe only explicit facts in the input. Do not use a noun that implies an event not present in the input, such as production, creation, battle, treaty, or reform, unless the input explicitly says so.
 
 Output Schema:
 {{

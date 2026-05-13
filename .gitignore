@@ -224,3 +224,18 @@ apikey_watsonx.ini
 .idea/
 .vscode/
 *.iml
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Runtime outputs
+outputs/*
+!outputs/.gitkeep
+
+# Local env
+.env
+
+# Hugging Face / model cache
+.cache/
